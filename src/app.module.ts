@@ -4,10 +4,13 @@ import { AppService } from './app.service';
 import { TeacherModule } from './teacher/teacher.module';
 import { TeacherController } from './teacher/teacher.controller';
 import { TeacherService } from './teacher/teacher.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [TeacherModule],
-  controllers: [AppController, TeacherController],
-  providers: [AppService, TeacherService],
+  imports: [TeacherModule, AuthModule],
+  controllers: [AppController, TeacherController, AuthController],
+  providers: [AppService, TeacherService, AuthService],
 })
 export class AppModule {}
