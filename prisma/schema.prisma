@@ -14,11 +14,57 @@ datasource db {
 }
 
 model Teacher {
-  uuid  String  @id
+  uuid  String @id
+  admin Boolean @default(false)
   nmteacher  String
-  email String  @unique
+  email String @unique
   created_at DateTime
   updated_at DateTime
+  courses Course[]
+}
+
+
+model Course {
+  uuid  String @id
+  nmcourse String
+  teacherId String
+  teacher Teacher @relation(fields: [teacherId], references: [uuid])
+  classId String
+  class Class @relation(fields: [classId], references: [uuid])
+  classrooms Classroom[]
+}
+
+
+model Class {
+  uuid String @id
+  nmclass String
+  graduarion Int
+  students Student[]
+  courses Course[]
+}
+
+
+model Student {
+  uuid String @id
+  nmstudent String
+  email String @unique
+  parentemail String
+  created_at DateTime
+  updated_at DateTime
+  classId String
+  class Class @relation(fields: [classId], references: [uuid])
+  classrooms Classroom[]
+}
+
+model Classroom {
+  uuid String @id
+  courseId String
+  course Course @relation(fields: [courseId], references: [uuid])
+  studentId String
+  student Student @relation(fields: [studentId], references: [uuid])
+  date DateTime
+  presence Boolean
+  period Int
 }
 
 
