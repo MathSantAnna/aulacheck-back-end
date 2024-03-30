@@ -3,17 +3,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TeacherModule } from './teacher/teacher.module';
 import { TeacherController } from './teacher/teacher.controller';
-//import { TeacherService } from './teacher/teacher.service';
+import { TeacherService } from './teacher/teacher.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './database/prisma.service';
-import { PrismaClient } from '@prisma/client';
-
-
 
 @Module({
-  imports: [
-
-  ],
-  controllers: [AppController, TeacherController],
-  providers: [AppService, PrismaService],
+  imports: [TeacherModule, AuthModule],
+  controllers: [AppController, TeacherController, AuthController],
+  providers: [AppService, TeacherService, AuthService, PrismaService],
 })
 export class AppModule {}

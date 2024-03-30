@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
 import { uuid } from 'uuidv4';
 
