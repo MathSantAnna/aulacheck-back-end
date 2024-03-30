@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './database/prisma.service';
 import { StudentModule } from './student/student.module';
 
+
 @Module({
   imports: [TeacherModule, AuthModule, StudentModule],
   controllers: [AppController, TeacherController, AuthController],

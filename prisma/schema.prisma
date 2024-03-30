@@ -51,8 +51,8 @@ model Student {
   parentemail String
   created_at DateTime
   updated_at DateTime
-  classId String
-  class Class @relation(fields: [classId], references: [uuid])
+  classId String?
+  class Class? @relation(fields: [classId], references: [uuid])
   classrooms Classroom[]
 }
 
