@@ -18,6 +18,7 @@ model Teacher {
   admin Boolean @default(false)
   nmteacher  String
   email String @unique
+  password String @default("Professor2024!")
   created_at DateTime
   updated_at DateTime
   courses Course[]
@@ -48,6 +49,7 @@ model Student {
   uuid String @id
   nmstudent String
   email String @unique
+  password String @default("Aluno2024!")
   parentemail String
   created_at DateTime
   updated_at DateTime
