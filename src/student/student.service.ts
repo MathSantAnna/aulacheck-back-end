@@ -2,13 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from 'src/database/prisma.service';
-import { uuid } from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
 export class StudentService {
   constructor(private readonly prisma: PrismaService) {}
    async create(createStudentDto: CreateStudentDto) {
-    return await this.prisma.student.create({data: {...createStudentDto, uuid: uuid(), created_at: new Date(), updated_at: new Date()}});
+    return await this.prisma.student.create({data: {...createStudentDto, uuid: uuidv4(), created_at: new Date(), updated_at: new Date()}});
   }
 
   async getStudents() {

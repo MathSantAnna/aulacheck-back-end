@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
-import { uuid } from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid'
 
 
 @Controller('teachers')
@@ -39,7 +39,7 @@ export class TeacherController {
     ) {
         return this.prisma.teacher.create({
             data: {
-                uuid: uuid(),
+                uuid: uuidv4(),
                 nmteacher,
                 email,
                 created_at: new Date(),
