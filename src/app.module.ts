@@ -9,10 +9,12 @@ import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './database/prisma.service';
 import { StudentModule } from './student/student.module';
+import { ClassModule } from './class/class.module';
+import { CourseModule } from './course/course.module';
 
 
 @Module({
-  imports: [TeacherModule, AuthModule, StudentModule],
+  imports: [TeacherModule, AuthModule, StudentModule, ClassModule, CourseModule],
   controllers: [AppController, TeacherController, AuthController],
   providers: [AppService, TeacherService, AuthService, PrismaService],
 })
