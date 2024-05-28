@@ -36,6 +36,7 @@ export class TeacherController {
     async createTeacher(
         @Body('nmteacher') nmteacher: string,
         @Body('email') email: string,
+        @Body('admin') admin: boolean,
     ) {
         return this.prisma.teacher.create({
             data: {
@@ -43,7 +44,8 @@ export class TeacherController {
                 nmteacher,
                 email,
                 created_at: new Date(),
-                updated_at: new Date()
+                updated_at: new Date(),
+                admin
             }
         });
     }
