@@ -33,4 +33,14 @@ export class StudentController {
   deleteStudent(@Param('id') id: string) {
     return this.studentService.deleteStudent(id);
   }
+
+  @Get('course/:courseId')
+  async getStudentsByCourse(@Param('courseId') courseId: string) {
+      return this.studentService.getStudentsByCourse(courseId);
+  }
+
+  @Get('class/:classId')
+  async getStudentsByClass(@Param('classId') classId: string) {
+      return this.studentService.getStudentsByClass(classId);
+  }
 }

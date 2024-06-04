@@ -79,6 +79,19 @@ export class TeacherController {
           });
     }
 
+    @Get('course/:courseId')
+    async getTeacherByCourse(@Param('courseId') courseId: string) {
+      const course = await this.prisma.course.findUnique({
+        where: { uuid: courseId },
+        include: { teacher: true },
+      });
+  
+      if (!course) {
+        throw new NotFoundException(`Course with UUID ${courseId} not found`);
+      }
+  
+      return course.teacher;
+    }
 }
 
 

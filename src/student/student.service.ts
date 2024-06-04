@@ -50,4 +50,17 @@ export class StudentService {
       },
     });
   }
+
+  async getStudentsByCourse(courseId: string) {
+    return this.prisma.student.findMany({
+        where: { classrooms: { some: { courseId: courseId } } },
+    });
+}
+
+async getStudentsByClass(classId: string) {
+  return this.prisma.student.findMany({
+      where: { classId: classId },
+  });
+}
+
 }
