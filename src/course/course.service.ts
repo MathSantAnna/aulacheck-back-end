@@ -12,7 +12,30 @@ export class CourseService {
   }
 
   async findAll() {
-    return await this.prisma.course.findMany();
+    const courses = await this.prisma.course.findMany();
+    let coursesDetailed = [];
+
+    for (const course of courses) {
+      const teacher = await this.prisma.teacher.findUnique({
+        where: {
+          uuid: course.teacherId || ''
+        }
+      });
+
+      const courseClass = await this.prisma.class.findUnique({
+        where: {
+          uuid: course.classId || ''
+        }
+      });
+
+      const courseDetailed = { ...course, nmteacher: teacher.nmteacher, nmclass: courseClass.nmclass }
+
+      coursesDetailed.push(courseDetailed)
+
+      console.log(coursesDetailed)
+    }
+
+    return coursesDetailed;
   }
 
   async findOne(id: string) {

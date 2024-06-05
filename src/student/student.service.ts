@@ -2,11 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from 'src/database/prisma.service';
+import { ClassroomService } from 'src/classroom/classroom.service';
 import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
 export class StudentService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly classroomService: ClassroomService) { }
    async create(createStudentDto: CreateStudentDto) {
     return await this.prisma.student.create({data: {...createStudentDto, uuid: uuidv4(), created_at: new Date(), updated_at: new Date()}});
   }
@@ -52,10 +53,33 @@ export class StudentService {
   }
 
   async getStudentsByCourse(courseId: string) {
-    return this.prisma.student.findMany({
-        where: { classrooms: { some: { courseId: courseId } } },
+
+    const studentWithFrequence = [];
+
+    const course = await this.prisma.course.findUnique({
+      where: { uuid: courseId }
+    })
+
+    const courseClassId = course.classId
+
+    const students = await this.prisma.student.findMany({
+      where: { classId: courseClassId },
     });
-}
+
+    for (const student of students) {
+      const frequence = await this.classroomService.getPresenceByStudent(courseId, student.uuid);
+      const classroomDetails = {
+        frequence: frequence.presencePercent === "NaN" ? "100%" : frequence.presencePercent,
+        numberOfPresence: frequence.numberOfPresence,
+        numberOfAbsent: frequence.numberOfAbsent,
+        history: frequence.data
+      }
+
+      studentWithFrequence.push({ ...student, classroomDetails })
+    }
+
+    return studentWithFrequence;
+  }
 
 async getStudentsByClass(classId: string) {
   return this.prisma.student.findMany({
