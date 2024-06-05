@@ -3,32 +3,37 @@ import { ClassroomService } from './classroom.service';
 import { CreateClassroomDto } from './dto/create-classroom.dto';
 import { UpdateClassroomDto } from './dto/update-classroom.dto';
 
-@Controller('classroom')
+@Controller()
 export class ClassroomController {
-  constructor(private readonly classroomService: ClassroomService) {}
+  constructor(private readonly classroomService: ClassroomService) { }
 
-  @Post("presence")
+  @Post("classroom/presence")
   create(@Body() createClassroomDto: CreateClassroomDto[]) {
     return this.classroomService.create(createClassroomDto);
   }
 
-  @Get(":courseId/:studentId")
+  @Get("classroom/:courseId/:studentId")
   getPresenceByStudent(@Param('courseId') courseId: string, @Param('studentId') studentId: string) {
-   
+
     return this.classroomService.getPresenceByStudent(courseId, studentId);
   }
 
-  @Get(':id')
+  @Post("checkCall")
+  checkCall(@Body() checkBody: any) {
+    return this.classroomService.checkCall(checkBody.courseId, checkBody.date)
+  }
+
+  @Get('classroom/:id')
   findOne(@Param('id') id: string) {
     return this.classroomService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch('classroom/:id')
   update(@Param('id') id: string, @Body() updateClassroomDto: UpdateClassroomDto) {
     return this.classroomService.update(+id, updateClassroomDto);
   }
 
-  @Delete(':id')
+  @Delete('classroom/:id')
   remove(@Param('id') id: string) {
     return this.classroomService.remove(+id);
   }
