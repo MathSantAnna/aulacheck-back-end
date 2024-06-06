@@ -12,13 +12,21 @@ export class AuthService {
 
     const { email, password } = params;
 
-    const user = await this.prisma.teacher.findUnique({
+    const userTeacher = await this.prisma.teacher.findUnique({
       where: { email },
     });
 
-    if (!user) {
+
+    const userStudent = await this.prisma.student.findUnique({
+      where: { email },
+    });
+
+
+    if (!userTeacher && !userStudent) {
       throw new UnauthorizedException('Invalid credentials');
     }
+
+    const user = userTeacher || userStudent;
 
     // To be used when the password comes encrypted
     // const passwordMatch = await bcrypt.compare(password, user.password);
@@ -30,18 +38,6 @@ export class AuthService {
 
     return user;
 
-    //   return {
-    //     data: {
-    //       created_at: '2024-03-27 08:00:00',
-    //       email: params.email,
-    //       nmuser: 'Matheus Miranda Ferreira',
-    //       token:
-    //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE3NjY2MjA4MDAwMDB9.Kod3Ijw_lNIv9fjbb5IwRxhn-QR5nVCokD8VZucxmP4',
-    //       updated_at: '2024-03-27 08:00:00',
-    //       uuiduser: '3919156b-a2f5-4c5f-b18a-5dabb715663c',
-    //     },
-    //     status: '00',
-    //   };
   }
 
   async generateAccessToken(user: any): Promise<string> {

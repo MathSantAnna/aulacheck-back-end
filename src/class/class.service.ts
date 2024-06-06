@@ -7,8 +7,15 @@ import { v4 as uuidv4 } from 'uuid'
 @Injectable()
 export class ClassService {
   constructor(private readonly prisma: PrismaService) { }
-  async create(createClassDto: CreateClassDto) {
+
+  async createClass(createClassDto: CreateClassDto) {
     return await this.prisma.class.create({ data: { ...createClassDto, uuid: uuidv4() } });
+  }
+
+  //delete
+
+  async deleteClass(uuid: string) { 
+    return await this.prisma.class.delete({ where: { uuid } });
   }
 
   async findAll() {

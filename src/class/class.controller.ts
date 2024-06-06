@@ -8,8 +8,13 @@ export class ClassController {
   constructor(private readonly classService: ClassService) {}
 
   @Post()
-  create(@Body() createClassDto: CreateClassDto) {
-    return this.classService.create(createClassDto);
+  createClass(@Body() createClassDto: CreateClassDto) {
+    return this.classService.createClass(createClassDto);
+  }
+
+  @Delete(':id')
+  deleteClass(@Param('id') id: string) { 
+    return this.classService.deleteClass(id);
   }
 
   @Get()
@@ -21,6 +26,7 @@ export class ClassController {
   addStudent(@Param('id') id: string, @Body() updateClassDto) {
     return this.classService.addStudent(id, updateClassDto);
   }
+
 
   /*@Get(':id')
   findOne(@Param('id') id: string) {
