@@ -55,6 +55,7 @@ export class TeacherController {
         @Param() teacherId,
         @Body('nmteacher') nmteacher: string,
         @Body('email') email: string,
+        @Body('password') password: string,
     ) {
         const uuid = teacherId.uuid;
         return this.prisma.teacher.update({
@@ -62,10 +63,14 @@ export class TeacherController {
             data: {
                 nmteacher,
                 email,
+                password,
                 updated_at: new Date(),
             }
         });
     }
+
+
+    
 
     @Delete('/:uuid')
     async deleteTeacher(
