@@ -37,4 +37,16 @@ export class ClassroomController {
   remove(@Param('id') id: string) {
     return this.classroomService.remove(+id);
   }
+
+  @Post('sendEmail')
+  async sendEmail(
+    @Body('to') to: string,
+    @Body('subject') subject: string,
+    @Body('text') text: string,
+    @Body('html') html: string
+  ): Promise<{ message: string }> {
+    await this.classroomService.sendMail(to, subject, text, html);
+    return { message: 'Email enviado com sucesso!' };
+  }
+  
 }

@@ -8,13 +8,39 @@ import { v4 as uuidv4 } from 'uuid'
 export class ClassroomService {
   constructor(private readonly prisma: PrismaService) { }
   async create(createClassRooms: CreateClassroomDto[]) {
+    const courseId = createClassRooms[0].courseId;
+    let students = [];
+
     for (const classRoom of createClassRooms) {
+      if (!students.includes(classRoom.studentId)) {
+        students.push(classRoom.studentId);
+      }
       await this.prisma.classroom.create(
         {
           data: { ...classRoom, date: new Date(), uuid: uuidv4() }
         }
       )
     }
+
+    for (const student of students) {
+      const frequence = await this.getPresenceByStudent(courseId, student);
+
+      const pcent: number = parseFloat(frequence.presencePercent);
+
+      if (frequence && pcent < 80) {
+        const studentDetails = await this.prisma.student.findUnique({
+          where: {
+            uuid: student
+          }
+        });
+
+        
+        const parentEmail = studentDetails.parentemail;
+        // to: string, subject: string, text: string, html: string
+        this.sendMail(parentEmail, 'Frequência Baixa', 'A frequência do seu filho está abaixo de 80%')
+      }
+    }
+
     return 'This action adds a new classroom';
   }
 
@@ -89,4 +115,29 @@ export class ClassroomService {
   remove(id: number) {
     return `This action removes a #${id} classroom`;
   }
+
+  async sendMail(to: string, subject: string, text: string, html?: string) {
+    const nodemailer = require('nodemailer');
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'aulacheck@gmail.com',
+        pass: 'inge jbkg euvi xzdi'
+      }
+    }
+    );
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to,
+      subject,
+      text,
+      html,
+    };
+    await transporter.sendMail(mailOptions);
+  }
+ 
 }
