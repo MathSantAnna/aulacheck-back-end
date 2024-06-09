@@ -3,6 +3,8 @@ import { CreateClassroomDto } from './dto/create-classroom.dto';
 import { UpdateClassroomDto } from './dto/update-classroom.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import { v4 as uuidv4 } from 'uuid'
+import { emailTemplate } from './consts';
+
 
 @Injectable()
 export class ClassroomService {
@@ -37,7 +39,7 @@ export class ClassroomService {
         
         const parentEmail = studentDetails.parentemail;
         // to: string, subject: string, text: string, html: string
-        this.sendMail(parentEmail, 'Frequência Baixa', 'A frequência do seu filho está abaixo de 80%')
+        this.sendMail(parentEmail, 'Frequência Baixa', '', emailTemplate(studentDetails.nmstudent))
       }
     }
 
@@ -116,7 +118,7 @@ export class ClassroomService {
     return `This action removes a #${id} classroom`;
   }
 
-  async sendMail(to: string, subject: string, text: string, html?: string) {
+  async sendMail(to: string, subject: string, text: string, html: string) {
     const nodemailer = require('nodemailer');
 
     const transporter = nodemailer.createTransport({
