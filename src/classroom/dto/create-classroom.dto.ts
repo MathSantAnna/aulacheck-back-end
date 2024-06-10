@@ -1,1 +1,1 @@
-export class CreateClassroomDto {courseId: string; studentId: string; presence: boolean; period: number}
+export class CreateClassroomDto { courseId: string; studentId: string; presence: boolean; period: number; date?: Date }

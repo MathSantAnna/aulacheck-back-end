@@ -17,9 +17,10 @@ export class ClassroomService {
       if (!students.includes(classRoom.studentId)) {
         students.push(classRoom.studentId);
       }
+      const date = classRoom?.date ? classRoom.date : new Date();
       await this.prisma.classroom.create(
         {
-          data: { ...classRoom, date: new Date(), uuid: uuidv4() }
+          data: { ...classRoom, date, uuid: uuidv4() }
         }
       )
     }
@@ -36,7 +37,7 @@ export class ClassroomService {
           }
         });
 
-        
+
         const parentEmail = studentDetails.parentemail;
         // to: string, subject: string, text: string, html: string
         this.sendMail(parentEmail, 'Frequência Baixa', '', emailTemplate(studentDetails.nmstudent))
@@ -111,10 +112,10 @@ export class ClassroomService {
   }
 
   async update(uuid: string, updateClassroomDto: UpdateClassroomDto) {
-   const update = await this.prisma.classroom.update({
+    const update = await this.prisma.classroom.update({
       where: { uuid: uuid },
       data: updateClassroomDto
-   })
+    })
     return update;
   }
 
@@ -145,5 +146,5 @@ export class ClassroomService {
     };
     await transporter.sendMail(mailOptions);
   }
- 
+
 }
