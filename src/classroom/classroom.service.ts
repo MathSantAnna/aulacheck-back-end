@@ -110,8 +110,12 @@ export class ClassroomService {
     return `This action returns a #${id} classroom`;
   }
 
-  update(id: number, updateClassroomDto: UpdateClassroomDto) {
-    return `This action updates a #${id} classroom`;
+  async update(uuid: string, updateClassroomDto: UpdateClassroomDto) {
+   const update = await this.prisma.classroom.update({
+      where: { uuid: uuid },
+      data: updateClassroomDto
+   })
+    return update;
   }
 
   remove(id: number) {

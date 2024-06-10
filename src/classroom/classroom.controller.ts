@@ -30,7 +30,7 @@ export class ClassroomController {
 
   @Patch('classroom/:id')
   update(@Param('id') id: string, @Body() updateClassroomDto: UpdateClassroomDto) {
-    return this.classroomService.update(+id, updateClassroomDto);
+    return this.classroomService.update(id, updateClassroomDto);
   }
 
   @Delete('classroom/:id')
